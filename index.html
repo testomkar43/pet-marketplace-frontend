@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pet Marketplace</title>
+</head>
+<body>
+  <h1>🐾 Pet Marketplace</h1>
+
+  <form id="petForm" enctype="multipart/form-data">
+    <input type="text" name="name" placeholder="Pet Name" required />
+    <input type="text" name="breed" placeholder="Breed" required />
+    <input type="text" name="age" placeholder="Age" required />
+    <input type="text" name="location" placeholder="Location" required />
+    <textarea name="description" placeholder="Description" required></textarea>
+    <input type="file" name="images" multiple required />
+    <button type="submit">Add Pet</button>
+  </form>
+
+  <h2>Available Pets</h2>
+  <div id="petList"></div>
+
+  <script>
+    const form = document.getElementById('petForm');
+    const petList = document.getElementById('petList');
+
+    const API = 'https://pet-marketplace-backend.onrender.com/api/pets';
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const res = await fetch(API, {
+        method: 'POST',
+        body: formData,
+      });
+      const pet = await res.json();
+      alert('Pet added successfully!');
+      displayPets();
+      form.reset();
+    });
+
+    async function displayPets() {
+      const res = await fetch(API);
+      const pets = await res.json();
+      petList.innerHTML = '';
+      pets.forEach(pet => {
+        const div = document.createElement('div');
+        div.innerHTML = `
+          <h3>${pet.name} (${pet.breed})</h3>
+          <p>Age: ${pet.age}, Location: ${pet.location}</p>
+          <p>${pet.description}</p>
+          ${pet.images.map(img => `<img src="https://pet-marketplace-backend.onrender.com/${img}" width="200"/>`).join('')}
+          <hr/>
+        `;
+        petList.appendChild(div);
+      });
+    }
+
+    displayPets();
+  </script>
+</body>
+</html>
