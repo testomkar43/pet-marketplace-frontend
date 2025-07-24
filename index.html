@@ -3,61 +3,81 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pet Marketplace</title>
-</head>
-<body>
-  <h1>🐾 Pet Marketplace</h1>
-
-  <form id="petForm" enctype="multipart/form-data">
-    <input type="text" name="name" placeholder="Pet Name" required />
-    <input type="text" name="breed" placeholder="Breed" required />
-    <input type="text" name="age" placeholder="Age" required />
-    <input type="text" name="location" placeholder="Location" required />
-    <textarea name="description" placeholder="Description" required></textarea>
-    <input type="file" name="images" multiple required />
-    <button type="submit">Add Pet</button>
-  </form>
-
-  <h2>Available Pets</h2>
-  <div id="petList"></div>
-
-  <script>
-    const form = document.getElementById('petForm');
-    const petList = document.getElementById('petList');
-
-    const API = 'https://pet-marketplace-backend.onrender.com/api/pets';
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const formData = new FormData(form);
-      const res = await fetch(API, {
-        method: 'POST',
-        body: formData,
-      });
-      const pet = await res.json();
-      alert('Pet added successfully!');
-      displayPets();
-      form.reset();
-    });
-
-    async function displayPets() {
-      const res = await fetch(API);
-      const pets = await res.json();
-      petList.innerHTML = '';
-      pets.forEach(pet => {
-        const div = document.createElement('div');
-        div.innerHTML = `
-          <h3>${pet.name} (${pet.breed})</h3>
-          <p>Age: ${pet.age}, Location: ${pet.location}</p>
-          <p>${pet.description}</p>
-          ${pet.images.map(img => `<img src="https://pet-marketplace-backend.onrender.com/${img}" width="200"/>`).join('')}
-          <hr/>
-        `;
-        petList.appendChild(div);
-      });
+  <title>🐾 Pet Marketplace</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-image: url('https://images.unsplash.com/photo-1558788353-f76d92427f16');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      backdrop-filter: brightness(0.85);
+      color: #fff;
     }
 
-    displayPets();
-  </script>
+    header {
+      text-align: center;
+      padding: 2rem;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    header h1 {
+      font-size: 3rem;
+      margin: 0;
+    }
+
+    main {
+      padding: 2rem;
+      background-color: rgba(0, 0, 0, 0.5);
+      max-width: 800px;
+      margin: 2rem auto;
+      border-radius: 15px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #ffc107;
+    }
+
+    .api-link {
+      display: block;
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      color: #00e5ff;
+      text-decoration: none;
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 0.75rem;
+      border-radius: 8px;
+    }
+
+    .api-link:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🐶 Pet Marketplace</h1>
+    <p>Find your perfect furry friend!</p>
+  </header>
+
+  <main>
+    <h2>Welcome to the Pet Marketplace API</h2>
+    <p>This is a backend-powered pet listing service where you can browse, post, and adopt animals.</p>
+    <a class="api-link" href="/api/pets">View All Pets → /api/pets</a>
+  </main>
+
+  <footer>
+    &copy; 2025 Pet Marketplace. Built with ❤️ by Omkar.
+  </footer>
 </body>
 </html>
