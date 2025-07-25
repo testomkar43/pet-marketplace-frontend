@@ -3,6 +3,7 @@ import Login from './components/Logintemp';
 import Register from './components/Register';
 import PetForm from './components/PetForm';
 import Home from './Home';
+import './style.css'; 
 
 const App = () => {
   const [user, setUser] = useState(localStorage.getItem('token'));
